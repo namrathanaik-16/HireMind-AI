@@ -60,7 +60,7 @@ export default function Home() {
           className="cta"
           disabled={!selectedRole}
           onClick={() =>
-            navigate("/interview", {
+            navigate("/coding", {
               state: { role: selectedRole },
             })
           }

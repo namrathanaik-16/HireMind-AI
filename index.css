@@ -71,6 +71,157 @@ body{
 .cta:disabled{
   opacity:.5;
   cursor:not-allowed;
+}
+/* CODING ROUND */
+
+.coding-page{
+  min-height:100vh;
+  background:#08111f;
+  padding:40px;
+}
+
+.coding-card{
+  max-width:1100px;
+  margin:auto;
+  background:#111827;
+  border:1px solid #1f2937;
+  border-radius:18px;
+  padding:28px;
+}
+
+.coding-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.coding-top h3{
+  margin-bottom:4px;
+}
+
+.coding-top p{
+  color:#94a3b8;
+}
+
+.timer{
+  background:#1d4ed8;
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.progress{
+  width:100%;
+  height:8px;
+  background:#1f2937;
+  border-radius:999px;
+  margin-bottom:22px;
+}
+
+.progress-fill{
+  height:100%;
+  background:#2563eb;
+  border-radius:999px;
+}
+
+.question-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+  color:#cbd5e1;
+}
+
+.badge{
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+}
+
+.easy{
+  background:#14532d;
+  color:#86efac;
+}
+
+.medium{
+  background:#78350f;
+  color:#fde68a;
+}
+
+.hard{
+  background:#7f1d1d;
+  color:#fca5a5;
+}
+
+.description{
+  color:#94a3b8;
+  margin:16px 0 22px;
+  line-height:1.6;
+}
+
+.editor textarea{
+  width:100%;
+  height:280px;
+  background:#020617;
+  color:#e2e8f0;
+  border:1px solid #334155;
+  border-radius:12px;
+  padding:18px;
+  resize:none;
+  font-family:Consolas, monospace;
+  font-size:14px;
+}
+
+.coding-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:14px;
+  margin-top:22px;
+}
+
+.coding-actions button{
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.secondary{
+  background:#1f2937;
+  color:white;
+}
+
+.coding-actions button:last-child{
+  background:#2563eb;
+  color:white;
+}
+.secondary:disabled{
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+/* SQL Schema Box */
+
+.schema-box{
+  background:#0f172a;
+  border:1px solid #334155;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:20px;
+}
+
+.schema-box h4{
+  color:#60a5fa;
+  margin-bottom:10px;
+}
+
+.schema-box pre{
+  color:#e2e8f0;
+  font-family:Consolas, monospace;
+  line-height:1.6;
+  white-space:pre-wrap;
 }ter;
   padding:12px 0;
 }
@@ -261,4 +412,155 @@ body{
 .cta:disabled{
   opacity:.5;
   cursor:not-allowed;
+}
+/* CODING ROUND */
+
+.coding-page{
+  min-height:100vh;
+  background:#08111f;
+  padding:40px;
+}
+
+.coding-card{
+  max-width:1100px;
+  margin:auto;
+  background:#111827;
+  border:1px solid #1f2937;
+  border-radius:18px;
+  padding:28px;
+}
+
+.coding-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.coding-top h3{
+  margin-bottom:4px;
+}
+
+.coding-top p{
+  color:#94a3b8;
+}
+
+.timer{
+  background:#1d4ed8;
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.progress{
+  width:100%;
+  height:8px;
+  background:#1f2937;
+  border-radius:999px;
+  margin-bottom:22px;
+}
+
+.progress-fill{
+  height:100%;
+  background:#2563eb;
+  border-radius:999px;
+}
+
+.question-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+  color:#cbd5e1;
+}
+
+.badge{
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+}
+
+.easy{
+  background:#14532d;
+  color:#86efac;
+}
+
+.medium{
+  background:#78350f;
+  color:#fde68a;
+}
+
+.hard{
+  background:#7f1d1d;
+  color:#fca5a5;
+}
+
+.description{
+  color:#94a3b8;
+  margin:16px 0 22px;
+  line-height:1.6;
+}
+
+.editor textarea{
+  width:100%;
+  height:280px;
+  background:#020617;
+  color:#e2e8f0;
+  border:1px solid #334155;
+  border-radius:12px;
+  padding:18px;
+  resize:none;
+  font-family:Consolas, monospace;
+  font-size:14px;
+}
+
+.coding-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:14px;
+  margin-top:22px;
+}
+
+.coding-actions button{
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.secondary{
+  background:#1f2937;
+  color:white;
+}
+
+.coding-actions button:last-child{
+  background:#2563eb;
+  color:white;
+}
+.secondary:disabled{
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+/* SQL Schema Box */
+
+.schema-box{
+  background:#0f172a;
+  border:1px solid #334155;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:20px;
+}
+
+.schema-box h4{
+  color:#60a5fa;
+  margin-bottom:10px;
+}
+
+.schema-box pre{
+  color:#e2e8f0;
+  font-family:Consolas, monospace;
+  line-height:1.6;
+  white-space:pre-wrap;
 }
