@@ -1,312 +1,71 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import Editor from "@monaco-editor/react";
+import frontendQuestions from "../data/questions/frontendQuestions";
+import javaQuestions from "../data/questions/javaQuestions";
+import pythonQuestions from "../data/questions/pythonQuestions";
+import qaQuestions from "../data/questions/qaQuestions";
+import dataAnalystQuestions from "../data/questions/dataAnalystQuestions";
+
+import { selectQuestions } from "../data/questions/selectQuestions";
+import {
+  getQuestionHistory,
+  saveQuestionHistory,
+} from "../data/questions/questionHistory";
+
 import "../index.css";
 
-const roleQuestions = {
-  "Frontend Developer": [
-    {
-      title: "Reverse a String",
-      difficulty: "Easy",
-      marks: 10,
-      description:
-        "Write a JavaScript function that returns the reversed version of a given string.",
-      starter: `function reverseString(str) {\n  // Write your code here\n}`,
-    },
-    {
-      title: "Find Maximum Number",
-      difficulty: "Easy",
-      marks: 10,
-      description: "Return the largest number in an array.",
-      starter: `function findMax(arr) {\n  // Write your code here\n}`,
-    },
-    {
-      title: "Palindrome Checker",
-      difficulty: "Medium",
-      marks: 15,
-      description:
-        "Check whether a string is a palindrome ignoring spaces and case.",
-      starter: `function isPalindrome(str) {\n  // Write your code here\n}`,
-    },
-    {
-      title: "Two Sum",
-      difficulty: "Medium",
-      marks: 15,
-      description:
-        "Return the indices of two numbers whose sum equals the target.",
-      starter: `function twoSum(nums, target) {\n  // Write your code here\n}`,
-    },
-    {
-      title: "Debounce Function",
-      difficulty: "Hard",
-      marks: 25,
-      description: "Implement a JavaScript debounce function.",
-      starter: `function debounce(fn, delay) {\n  // Write your code here\n}`,
-    },
-    {
-      title: "Todo State Manager",
-      difficulty: "Hard",
-      marks: 25,
-      description:
-        "Implement add, delete and toggle logic for a todo list.",
-      starter: `class TodoManager {\n  // Write your code here\n}`,
-    },
-  ],
-
-  "Python Developer": [
-    {
-      title: "Factorial",
-      difficulty: "Easy",
-      marks: 10,
-      description: "Return the factorial of a number.",
-      starter: `def factorial(n):\n    # Write your code here\n    pass`,
-    },
-    {
-      title: "Largest Number",
-      difficulty: "Easy",
-      marks: 10,
-      description: "Return the largest number in a list.",
-      starter: `def largest(nums):\n    # Write your code here\n    pass`,
-    },
-    {
-      title: "Palindrome",
-      difficulty: "Medium",
-      marks: 15,
-      description: "Check whether a string is a palindrome.",
-      starter: `def is_palindrome(text):\n    # Write your code here\n    pass`,
-    },
-    {
-      title: "Two Sum",
-      difficulty: "Medium",
-      marks: 15,
-      description: "Return indices whose sum equals target.",
-      starter: `def two_sum(nums, target):\n    # Write your code here\n    pass`,
-    },
-    {
-      title: "LRU Cache",
-      difficulty: "Hard",
-      marks: 25,
-      description: "Implement an LRU Cache.",
-      starter: `class LRUCache:\n    def __init__(self, capacity):\n        pass`,
-    },
-    {
-      title: "Library Management",
-      difficulty: "Hard",
-      marks: 25,
-      description: "Design a simple library management system.",
-      starter: `class Library:\n    pass`,
-    },
-  ],
-
-  "Java Developer": [
-    {
-      title: "Factorial",
-      difficulty: "Easy",
-      marks: 10,
-      description: "Print factorial of a number.",
-      starter: `public class Main {\n  public static void main(String[] args){\n\n  }\n}`,
-    },
-    {
-      title: "Fibonacci",
-      difficulty: "Easy",
-      marks: 10,
-      description: "Generate Fibonacci sequence.",
-      starter: `public class Main {\n  public static void main(String[] args){\n\n  }\n}`,
-    },
-    {
-      title: "Valid Parentheses",
-      difficulty: "Medium",
-      marks: 15,
-      description: "Determine whether brackets are balanced.",
-      starter: `public static boolean isValid(String s){\n\n}`,
-    },
-    {
-      title: "Binary Search",
-      difficulty: "Medium",
-      marks: 15,
-      description: "Implement Binary Search.",
-      starter: `public static int binarySearch(int[] arr,int target){\n\n}`,
-    },
-    {
-      title: "LRU Cache",
-      difficulty: "Hard",
-      marks: 25,
-      description: "Implement an LRU Cache.",
-      starter: `class LRUCache {\n\n}`,
-    },
-    {
-      title: "Employee Management",
-      difficulty: "Hard",
-      marks: 25,
-      description: "Design an Employee Management system.",
-      starter: `class Employee {\n\n}`,
-    },
-  ],
-
-  "QA Engineer": [
-    {
-      title: "Email Validation",
-      difficulty: "Easy",
-      marks: 10,
-      description: "Validate email format.",
-      starter: `function validateEmail(email){\n  // Write your code here\n}`,
-    },
-    {
-      title: "Duplicate Logs",
-      difficulty: "Easy",
-      marks: 10,
-      description: "Find duplicate log entries.",
-      starter: `function findDuplicates(logs){\n\n}`,
-    },
-    {
-      title: "API Response Validation",
-      difficulty: "Medium",
-      marks: 15,
-      description: "Validate the given JSON response.",
-      starter: `const response = {\n\n}`,
-    },
-    {
-      title: "Employee & Department Join",
-      difficulty: "Medium",
-      marks: 15,
-      description:
-        "Write an SQL query to display employee name and department name.",
-      schema: `employees
-------------------------------------------------
-emp_id          INT
-emp_name        VARCHAR
-department_id   INT
-
-departments
-------------------------------------------------
-department_id   INT
-department_name VARCHAR`,
-      starter: `-- Write your SQL query below`,
-    },
-    {
-      title: "Checkout Test Scenarios",
-      difficulty: "Hard",
-      marks: 25,
-      description:
-        "Write functional test scenarios for an e-commerce checkout page.",
-      starter: `1. `,
-    },
-    {
-      title: "Bug Classification",
-      difficulty: "Hard",
-      marks: 25,
-      description: "Classify bugs by severity and priority.",
-      starter: `Critical:\nHigh:\nMedium:\nLow:`,
-    },
-  ],
-
-  "Data Analyst": [
-    {
-      title: "Average Salary by Department",
-      difficulty: "Easy",
-      marks: 10,
-      description:
-        "Display department name and average salary. Sort by highest average salary.",
-      schema: `employees
-------------------------------------------------
-emp_id          INT
-emp_name        VARCHAR
-department_id   INT
-salary          INT
-
-departments
-------------------------------------------------
-department_id   INT
-department_name VARCHAR`,
-      starter: `-- Write your SQL query below`,
-    },
-    {
-      title: "Top 5 Customers by Revenue",
-      difficulty: "Easy",
-      marks: 10,
-      description:
-        "Return the top 5 customers based on total purchase amount.",
-      schema: `customers
-------------------------------------------------
-customer_id     INT
-customer_name   VARCHAR
-
-orders
-------------------------------------------------
-order_id        INT
-customer_id     INT
-amount          DECIMAL`,
-      starter: `-- Write your SQL query below`,
-    },
-    {
-      title: "Monthly Revenue",
-      difficulty: "Medium",
-      marks: 15,
-      description:
-        "Calculate the total revenue generated in each month.",
-      schema: `orders
-------------------------------------------------
-order_id        INT
-order_date      DATE
-amount          DECIMAL`,
-      starter: `-- Write your SQL query below`,
-    },
-    {
-      title: "Customer Segmentation",
-      difficulty: "Medium",
-      marks: 15,
-      description:
-        "Classify customers into Platinum, Gold and Silver based on total spending.",
-      schema: `orders
-------------------------------------------------
-customer_id     INT
-amount          DECIMAL`,
-      starter: `-- Write your SQL query below`,
-    },
-    {
-      title: "Sales Dashboard KPIs",
-      difficulty: "Hard",
-      marks: 25,
-      description:
-        "Using a single SQL query, return Total Revenue, Total Orders, Average Order Value and Highest Order Value.",
-      schema: `orders
-------------------------------------------------
-order_id        INT
-amount          DECIMAL`,
-      starter: `-- Write your SQL query below`,
-    },
-    {
-      title: "Customer Retention Analysis",
-      difficulty: "Hard",
-      marks: 25,
-      description:
-        "Find customers who placed orders in both January and February.",
-      schema: `orders
-------------------------------------------------
-customer_id     INT
-order_date      DATE`,
-      starter: `-- Write your SQL query below`,
-    },
-  ],
+const questionBanks = {
+  "Frontend Developer": frontendQuestions,
+  "Java Developer": javaQuestions,
+  "Python Developer": pythonQuestions,
+  "QA Engineer": qaQuestions,
+  "Data Analyst": dataAnalystQuestions,
 };
 
 export default function CodingRound() {
   const location = useLocation();
+
   const selectedRole =
     location.state?.role || "Frontend Developer";
 
-  const questions = roleQuestions[selectedRole];
+  const questionBank =
+  questionBanks[selectedRole] || frontendQuestions;
+
+  const [questions] = useState(() => {
+    const attemptedIds =
+      getQuestionHistory(selectedRole);
+
+  return selectQuestions(
+    questionBank,
+    6,
+    attemptedIds
+  );
+});
 
   const [current, setCurrent] = useState(0);
 
-  const [answers, setAnswers] = useState(
+  const [answers, setAnswers] = useState(() =>
     questions.map((q) => q.starter)
   );
 
-  const [timeLeft, setTimeLeft] = useState(50 * 60);
+  const [timeLeft, setTimeLeft] =
+    useState(50 * 60);
+
+  const [output, setOutput] =
+    useState("");
+
+  const [runError, setRunError] =
+    useState("");
+
+  const [testResults, setTestResults] =
+    useState([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft((prev) =>
+        prev > 0 ? prev - 1 : 0
+      );
     }, 1000);
 
     return () => clearInterval(timer);
@@ -317,105 +76,531 @@ export default function CodingRound() {
   const progress =
     ((current + 1) / questions.length) * 100;
 
-  const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
-  const seconds = String(timeLeft % 60).padStart(2, "0");
+  const minutes = String(
+    Math.floor(timeLeft / 60)
+  ).padStart(2, "0");
+
+  const seconds = String(
+    timeLeft % 60
+  ).padStart(2, "0");
 
   const updateAnswer = (value) => {
     const updated = [...answers];
+
     updated[current] = value;
+
     setAnswers(updated);
+  };
+
+  const clearResults = () => {
+    setOutput("");
+    setRunError("");
+    setTestResults([]);
   };
 
   const nextQuestion = () => {
     if (current < questions.length - 1) {
       setCurrent(current + 1);
+      clearResults();
     }
   };
 
   const previousQuestion = () => {
     if (current > 0) {
       setCurrent(current - 1);
+      clearResults();
     }
   };
 
   const finishRound = () => {
-    alert(`${selectedRole} Coding Round Completed!`);
+    const questionIds =
+      questions.map(
+        (question) => question.id
+      );
+
+  saveQuestionHistory(
+    selectedRole,
+    questionIds
+  );
+
+  alert(
+    `${selectedRole} Coding Round Completed!`
+  );
+};
+
+  const getEditorLanguage = () => {
+    if (q.schema) {
+      return "sql";
+    }
+
+    if (selectedRole === "Python Developer") {
+      return "python";
+    }
+
+    if (selectedRole === "Java Developer") {
+      return "java";
+    }
+
+    return "javascript";
+  };
+
+  const compareValues = (
+    actual,
+    expected
+  ) => {
+    if (
+      Array.isArray(actual) &&
+      Array.isArray(expected)
+    ) {
+      return (
+        JSON.stringify(actual) ===
+        JSON.stringify(expected)
+      );
+    }
+
+    if (
+      typeof actual === "object" &&
+      actual !== null &&
+      typeof expected === "object" &&
+      expected !== null
+    ) {
+      return (
+        JSON.stringify(actual) ===
+        JSON.stringify(expected)
+      );
+    }
+
+    return (
+      String(actual) ===
+      String(expected)
+    );
+  };
+
+  const runStandardFunctionTests = (
+    candidateFunction
+  ) => {
+    const results =
+      q.testCases.map((testCase) => {
+        const actual =
+          candidateFunction(
+            ...testCase.input
+          );
+
+        const passed =
+          compareValues(
+            actual,
+            testCase.expected
+          );
+
+        return {
+          input: testCase.input,
+          expected: testCase.expected,
+          actual,
+          passed,
+        };
+      });
+
+    return results;
+  };
+
+  const runCode = () => {
+    setOutput("");
+    setRunError("");
+    setTestResults([]);
+
+    try {
+      /*
+       * Questions with specialized evaluators
+       * will be connected later.
+       */
+
+      if (q.evaluator) {
+        if (
+          q.evaluator === "debounce" ||
+          q.evaluator ===
+            "async-request-manager" ||
+          q.evaluator ===
+            "code-review" ||
+          q.evaluator === "async" ||
+          q.evaluator ===
+            "react-hook"
+        ) {
+          setOutput(
+            "This question uses a specialized evaluator. Automatic evaluation for this question type will be connected next."
+          );
+
+          return;
+        }
+      }
+
+      /*
+       * Questions without automated
+       * test cases can still execute
+       * JavaScript code.
+       */
+
+      if (!q.testCases) {
+        const code = answers[current];
+
+        const logs = [];
+
+        const originalLog =
+          console.log;
+
+        console.log = (...args) => {
+          logs.push(
+            args
+              .map((value) =>
+                typeof value ===
+                "object"
+                  ? JSON.stringify(
+                      value
+                    )
+                  : String(value)
+              )
+              .join(" ")
+          );
+        };
+
+        try {
+          const execute =
+            new Function(code);
+
+          execute();
+        } finally {
+          console.log =
+            originalLog;
+        }
+
+        if (logs.length > 0) {
+          setOutput(
+            logs.join("\n")
+          );
+        } else {
+          setOutput(
+            "Code executed successfully. No output."
+          );
+        }
+
+        return;
+      }
+
+      const code = answers[current];
+
+      const functionName =
+        q.functionName;
+
+      const execute =
+        new Function(
+          `${code}
+
+          return typeof ${functionName} === "function"
+            ? ${functionName}
+            : null;
+          `
+        );
+
+      const candidateFunction =
+        execute();
+
+      if (!candidateFunction) {
+        throw new Error(
+          `Function ${functionName} was not found.`
+        );
+      }
+
+      const results =
+        runStandardFunctionTests(
+          candidateFunction
+        );
+
+      setTestResults(results);
+
+      const passedCount =
+        results.filter(
+          (test) => test.passed
+        ).length;
+
+      setOutput(
+        `${passedCount} / ${results.length} Test Cases Passed`
+      );
+    } catch (error) {
+      setRunError(
+        error.message
+      );
+    }
   };
 
   return (
     <div className="coding-page">
+
       <div className="coding-card">
 
         <div className="coding-top">
+
           <div>
-            <h3>{selectedRole}</h3>
-            <p>Question {current + 1} of {questions.length}</p>
+            <h3>
+              {selectedRole}
+            </h3>
+
+            <p>
+              Question {current + 1} of{" "}
+              {questions.length}
+            </p>
           </div>
 
           <div className="timer">
             {minutes}:{seconds}
           </div>
+
         </div>
 
         <div className="progress">
+
           <div
             className="progress-fill"
-            style={{ width: `${progress}%` }}
+            style={{
+              width: `${progress}%`,
+            }}
           ></div>
+
         </div>
 
         <div className="question-header">
-          <span className={`badge ${q.difficulty.toLowerCase()}`}>
+
+          <span
+            className={`badge ${q.difficulty.toLowerCase()}`}
+          >
             {q.difficulty}
           </span>
 
-          <span>{q.marks} Marks</span>
+          <span>
+            {q.marks} Marks
+          </span>
+
         </div>
 
-        <h2>{q.title}</h2>
+        <h2>
+          {q.title}
+        </h2>
 
-        <p className="description">{q.description}</p>
+        <p className="description">
+          {q.description}
+        </p>
+
+        {q.skills && (
+          <div className="question-skills">
+
+            {q.skills.map(
+              (skill) => (
+                <span
+                  key={skill}
+                  className="skill-tag"
+                >
+                  {skill}
+                </span>
+              )
+            )}
+
+          </div>
+        )}
 
         {q.schema && (
           <div className="schema-box">
-            <h4>Database Schema</h4>
-            <pre>{q.schema}</pre>
+
+            <h4>
+              Database Schema
+            </h4>
+
+            <pre>
+              {q.schema}
+            </pre>
+
           </div>
         )}
 
         <div className="editor">
-          <textarea
-            spellCheck={false}
+
+          <Editor
+            height="400px"
+            language={getEditorLanguage()}
+            theme="vs-dark"
             value={answers[current]}
-            onChange={(e) => updateAnswer(e.target.value)}
+            onChange={(value) =>
+              updateAnswer(
+                value || ""
+              )
+            }
+            options={{
+              minimap: {
+                enabled: false,
+              },
+
+              fontSize: 14,
+
+              lineNumbers: "on",
+
+              wordWrap: "on",
+
+              automaticLayout: true,
+
+              tabSize: 2,
+
+              scrollBeyondLastLine:
+                false,
+
+              padding: {
+                top: 15,
+              },
+            }}
           />
+
         </div>
 
+        {(output || runError) && (
+          <div className="output-console">
+
+            <div className="output-header">
+
+              <span>
+                {runError
+                  ? "Error"
+                  : "Test Results"}
+              </span>
+
+            </div>
+
+            {runError ? (
+              <pre className="error-output">
+                {runError}
+              </pre>
+            ) : (
+              <>
+                <div className="test-summary">
+                  {output}
+                </div>
+
+                {testResults.length >
+                  0 && (
+                  <div className="test-results">
+
+                    {testResults.map(
+                      (
+                        test,
+                        index
+                      ) => (
+                        <div
+                          className={`test-case ${
+                            test.passed
+                              ? "passed"
+                              : "failed"
+                          }`}
+                          key={index}
+                        >
+
+                          <div className="test-case-title">
+
+                            <span>
+                              {test.passed
+                                ? "✓"
+                                : "✗"}
+                            </span>
+
+                            <span>
+                              Test Case{" "}
+                              {index + 1}
+                            </span>
+
+                          </div>
+
+                          <div className="test-case-details">
+
+                            <div>
+                              <strong>
+                                Input:
+                              </strong>{" "}
+                              {JSON.stringify(
+                                test.input
+                              )}
+                            </div>
+
+                            <div>
+                              <strong>
+                                Expected:
+                              </strong>{" "}
+                              {JSON.stringify(
+                                test.expected
+                              )}
+                            </div>
+
+                            <div>
+                              <strong>
+                                Actual:
+                              </strong>{" "}
+                              {JSON.stringify(
+                                test.actual
+                              )}
+                            </div>
+
+                          </div>
+
+                        </div>
+                      )
+                    )}
+
+                  </div>
+                )}
+
+              </>
+            )}
+
+          </div>
+        )}
+
         <div className="coding-actions">
+
           <button
             className="secondary"
-            disabled={current === 0}
-            onClick={previousQuestion}
+            disabled={
+              current === 0
+            }
+            onClick={
+              previousQuestion
+            }
           >
             Previous
           </button>
 
-          <button className="secondary">
+          <button
+            className="secondary"
+            onClick={runCode}
+          >
             Run Code
           </button>
 
-          {current === questions.length - 1 ? (
-            <button onClick={finishRound}>
+          {current ===
+          questions.length - 1 ? (
+            <button
+              onClick={
+                finishRound
+              }
+            >
               Finish Round
             </button>
           ) : (
-            <button onClick={nextQuestion}>
+            <button
+              onClick={
+                nextQuestion
+              }
+            >
               Next Question
             </button>
           )}
+
         </div>
 
       </div>
+
     </div>
   );
 }
